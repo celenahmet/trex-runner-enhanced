@@ -1,165 +1,292 @@
 /* Copyright 2013 The Chromium Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-html, body {
-  padding: 0;
+html,
+body {
   margin: 0;
-  width: 100%;
-  height: 100%;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: radial-gradient(circle at top, #1a1030 0, #050511 55%, #02020a 100%);
+  color: #f9f7ff;
 }
 
-.icon {
-  -webkit-user-select: none;
-  user-select: none;
-  display: inline-block;
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.icon-offline {
-  content: -webkit-image-set( url(assets/default_100_percent/100-error-offline.png) 1x, url(assets/default_200_percent/200-error-offline.png) 2x);
-  position: relative;
+/* ----------------- Giriş Overlay ----------------- */
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(circle at top, #2b174d 0, #090314 55%, #020008 100%);
+  backdrop-filter: blur(18px);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
-.hidden {
-  display: none;
-}
-
-
-/* Offline page */
-
-.offline .interstitial-wrapper {
-  color: #2b2b2b;
-  font-size: 1em;
-  line-height: 1.55;
-  margin: 0 auto;
-  max-width: 600px;
-  padding-top: 100px;
-  width: 100%;
-}
-
-.offline .runner-container {
-  height: 150px;
-  max-width: 600px;
-  overflow: hidden;
-  position: absolute;
-  top: 35px;
-  width: 44px;
-}
-
-.offline .runner-canvas {
-  height: 150px;
-  max-width: 600px;
-  opacity: 1;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  z-index: 2;
-}
-
-.offline .controller {
-  background: rgba(247, 247, 247, .1);
-  height: 100vh;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100vw;
-  z-index: 1;
-}
-
-#offline-resources {
-  display: none;
-}
-
-@media (max-width: 420px) {
-  .suggested-left > #control-buttons, .suggested-right > #control-buttons {
-    float: none;
-  }
-  .snackbar {
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    border-radius: 0;
-  }
-}
-
-@media (max-height: 350px) {
-  h1 {
-    margin: 0 0 15px;
-  }
-  .icon-offline {
-    margin: 0 0 10px;
-  }
-  .interstitial-wrapper {
-    margin-top: 5%;
-  }
-  .nav-wrapper {
-    margin-top: 30px;
-  }
-}
-
-@media (min-width: 600px) and (max-width: 736px) and (orientation: landscape) {
-  .offline .interstitial-wrapper {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-@media (min-width: 420px) and (max-width: 736px) and (min-height: 240px) and (max-height: 420px) and (orientation:landscape) {
-  .interstitial-wrapper {
-    margin-bottom: 100px;
-  }
-}
-
-@media (min-height: 240px) and (orientation: landscape) {
-  .offline .interstitial-wrapper {
-    margin-bottom: 90px;
-  }
-  .icon-offline {
-    margin-bottom: 20px;
-  }
-}
-
-@media (max-height: 320px) and (orientation: landscape) {
-  .icon-offline {
-    margin-bottom: 0;
-  }
-  .offline .runner-container {
-    top: 10px;
-  }
-}
-
-@media (max-width: 240px) {
-  .interstitial-wrapper {
-    overflow: inherit;
-    padding: 0 8px;
-  }
-}
-
-.arcade-mode,
-.arcade-mode .runner-container,
-.arcade-mode .runner-canvas {
-  image-rendering: pixelated;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.arcade-mode #buttons,
-.arcade-mode #main-content {
+.intro-overlay--hidden {
   opacity: 0;
-  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.arcade-mode .interstitial-wrapper {
-  height: 100vh;
+.intro-card {
+  max-width: 780px;
+  width: 100%;
+  background: linear-gradient(145deg, #26123f, #120820);
+  border-radius: 22px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.intro-title {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.intro-subtitle {
+  margin: 6px 0 10px;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.intro-body h2 {
+  margin: 4px 0 6px;
+  font-size: 1.2rem;
+}
+
+.intro-body ul {
+  margin: 4px 0 8px;
+  padding-left: 18px;
+  font-size: 0.95rem;
+}
+
+.intro-text {
+  margin: 4px 0 8px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.intro-hint {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.intro-button {
+  margin-top: 14px;
+  padding: 9px 22px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.85);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.intro-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.9);
+}
+
+.intro-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 9px 24px rgba(0, 0, 0, 0.85);
+  opacity: 0.9;
+}
+
+.intro-small-hint {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* ----------------- Header ----------------- */
+
+.page-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(
+    90deg,
+    rgba(126, 87, 194, 0.32),
+    rgba(6, 5, 20, 0.96)
+  );
+  backdrop-filter: blur(18px);
+}
+
+.page-header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 14px 20px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.7rem;
+  letter-spacing: 0.06em;
+}
+
+.page-subtitle {
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+  opacity: 0.8;
+}
+
+/* ----------------- Ana İçerik ----------------- */
+
+.page-main {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 18px 20px;
+}
+
+/* ----------------- Oyun Alanı ----------------- */
+
+.game-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.game-shell {
+  position: relative;
+  background: radial-gradient(circle at top, #221339 0, #0a0716 55%, #05030d 100%);
+  border-radius: 20px;
+  padding: 16px 16px 22px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#game {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #070713;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-text {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  opacity: 0.86;
+}
+
+/* ----------------- Alt Bilgi (Intro Modunda) ----------------- */
+
+.info-panel {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(8, 6, 18, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.9rem;
+}
+
+.info-panel h2 {
+  margin: 0 0 6px;
+}
+
+.info-panel ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+/* ----------------- Footer ----------------- */
+
+.page-footer {
+  padding: 10px 20px 16px;
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* ----------------- Oyun Başladıktan Sonra (SADE MOD) ----------------- */
+/* body.game-focused olduğunda sadece oyun alanı ortalanır */
+
+body.game-focused .page-header,
+body.game-focused .info-panel,
+body.game-focused .page-footer {
+  display: none;
+}
+
+body.game-focused .page-main {
+  flex: 1;
   max-width: 100%;
-  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.arcade-mode .runner-container {
-  left: 0;
-  margin: auto;
-  right: 0;
-  transform-origin: top center;
-  transition: transform 250ms cubic-bezier(0.4, 0, 1, 1) 400ms;
-  z-index: 2;
+body.game-focused .game-panel {
+  width: 100%;
+  max-width: 960px;
+  padding: 24px 16px;
+}
+
+body.game-focused .game-shell {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 18px 18px 24px;
+  border-radius: 22px;
+  transition: transform 0.25s ease;
+  transform: scale(1.04);
+}
+
+body.game-focused #game {
+  border-radius: 16px;
+}
+
+/* Status yazısını daha küçük ve sade yapalım */
+body.game-focused .status-text {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+/* ----------------- Responsive ----------------- */
+
+@media (max-width: 640px) {
+  .page-header-inner {
+    padding-inline: 14px;
+  }
+
+  .page-main {
+    padding-inline: 12px;
+  }
+
+  .page-title {
+    font-size: 1.45rem;
+  }
+
+  .intro-card {
+    padding-inline: 18px;
+  }
+
+  body.game-focused .game-panel {
+    padding: 18px 10px;
+  }
 }
